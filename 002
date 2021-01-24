@@ -25,3 +25,37 @@ public:
         return ans;
     }
 };
+
+
+LSY：
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode*head=NULL;      //头指针为空
+        ListNode*tail=NULL;      //尾指针为空
+        int x=0;      //表示进位
+        while(l1||l2)      //只要两个链表均非空
+        {
+            int n1=l1?l1->val:0;      //链表的第一个元素
+            int n2=l2?l2->val:0;      //另一个链表的第一个元素
+            int sum=n1+n2+x;      //两个数值以及进位的和
+            if(!head)      //如果头指针为空
+            {
+                head=tail=new ListNode(sum%10);      //头和尾均为和的个位
+            }
+            else
+            {
+                tail->next=new ListNode(sum%10);
+                tail=tail->next;      //修改尾指针
+            }
+            x=sum/10;      //修改进位的数值
+            if(l1)      //链表1非空
+            l1=l1->next;      //指向下一个元素
+            if(l2)      //链表2非空
+            l2=l2->next;      //指向下一个元素
+        }
+        if(x>0)      //如果仍有进位
+        tail->next=new ListNode(x);      //添加新的结点
+        return head;
+    }
+};
