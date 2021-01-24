@@ -16,3 +16,28 @@ public:
         return {};
     }
 };
+
+LSY：
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int i,j;
+        //从第一个元素开始
+        for(int i=0;i<nums.size();i++)
+        {
+            //从下一个元素开始判断
+            for(int j=i+1;j<nums.size();j++)
+            {
+                //如果和相等
+                if(nums[i]+nums[j]==target)
+                {
+                    //如果找到两个整数符合，返回两个整数
+                    return{i,j};
+                }
+            }
+        }
+        //如果找不到，仍然返回两个整数
+        return{i,j};
+
+    }
+};
