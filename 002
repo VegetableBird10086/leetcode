@@ -1,0 +1,27 @@
+ZZL:
+执行用时：40 ms, 在所有 C++ 提交中击败了87.82%的用户
+内存消耗：69 MB, 在所有 C++ 提交中击败了99.30%的用户
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        // 答案用l1储存储存
+        ListNode* ans = l1;
+        // 进位 运算结果
+        int carry_bit = 0, val = 0;
+        while(l2!= nullptr || carry_bit){
+            if(l2 != nullptr)
+                val = l1->val + l2->val + carry_bit;
+            else
+                val = l1->val + carry_bit;
+            carry_bit = val / 10;
+            val %= 10;
+            l1->val = val;
+            if(l2!=nullptr)
+                l2 = l2->next;
+            if(l1->next == nullptr&&(l2!=nullptr||carry_bit))
+                l1->next = new ListNode;
+            l1 = l1->next;
+        }
+        return ans;
+    }
+};
