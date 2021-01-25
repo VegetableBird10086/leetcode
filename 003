@@ -25,3 +25,24 @@ public:
         return ans;
     }
 };
+
+
+LSY：
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if (s.size() == 0) return 0;
+        unordered_set<char> lookup;      //集合记录每个字符
+        int maxStr = 0;
+        int left = 0;      //左指针为0
+        for (int i = 0; i < s.size(); i++) {
+            while (lookup.find(s[i]) != lookup.end()) {
+                lookup.erase(s[left]);      //滑块移动，最左边元素出集合
+                left++;
+            }
+            maxStr = max(maxStr, i - left + 1);
+            lookup.insert(s[i]);
+        }
+        return maxStr;
+    }
+};
