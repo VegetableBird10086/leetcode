@@ -1,0 +1,27 @@
+ZZL:
+执行用时：4 ms, 在所有 C++ 提交中击败了98.38%的用户
+内存消耗：6.8 MB, 在所有 C++ 提交中击败了97.58%的用户
+class Solution {
+public:
+    // 本题做法：尺取法
+    int lengthOfLongestSubstring(string s) {
+        // 建立集合
+        bool hash[256]={0};
+        int ans=0,nowLength=0;
+        // 双指针
+        int left=0,right=0;
+        while(right<s.size()){
+            // 当右指针的所指元素已经存在在集合中时
+            while(hash[s[right]]){
+                // 左指针收缩 
+                hash[s[left++]]=false;
+                nowLength--;
+            }
+            nowLength++;
+            ans = max(nowLength,ans);
+            hash[s[right]]=true;   
+            right++;
+        }
+        return ans;
+    }
+};
