@@ -1,0 +1,38 @@
+ZZL:
+执行用时：40 ms, 在所有 C++ 提交中击败了94.16%的用户
+内存消耗：86.9 MB, 在所有 C++ 提交中击败了94.09%的用户
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+我再研究研究后写注释和思路
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+class Solution {
+public:
+    double getKthElement(vector<int>& nums1, vector<int>& nums2, int K){
+        int last_index1=-1,last_index2=-1;
+        int m=nums1.size(),n=nums2.size();
+        while(1){
+            if(last_index1==m-1)
+                return nums2[last_index2+K];
+            if(last_index2==n-1)
+                return nums1[last_index1+K];
+            if(K==1)
+                return min(nums1[last_index1+1],nums2[last_index2+1]);
+            int now_index1=min(last_index1+K/2,m-1),now_index2=min(last_index2+K/2,n-1);
+            if(nums1[now_index1]<nums2[now_index2]){
+                K-=now_index1-last_index1;
+                last_index1=now_index1;
+            }
+            else{
+                K-=now_index2-last_index2;
+                last_index2=now_index2;
+            }
+        }
+    }
+
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int total_length=nums1.size()+nums2.size();
+        if(total_length&1)
+            return getKthElement(nums1,nums2,(total_length+1)>>1);
+        else
+            return (getKthElement(nums1,nums2,total_length >>1)+getKthElement(nums1,nums2,(total_length >>1)+1))/2.0;
+    }
+};
