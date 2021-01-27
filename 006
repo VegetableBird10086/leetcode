@@ -22,3 +22,25 @@ public:
         return ans;
     }
 };
+
+官方的题解思路一致，但是更加简洁明了
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows==1)
+            return s;
+        int size=s.size(),it=0;
+        string ans=s;
+        int gap=2*numRows-2;
+        for(int i=0;i<numRows;i++){
+            for(int j=0;j+i<size;j+=gap){
+                ans[it++]=s[j+i];
+                if(i!=0&&i!=numRows-1&&j+gap-i<size)
+                    ans[it++]=s[j+gap-i];
+            }
+        }
+        return ans;
+    }
+};
+
+
