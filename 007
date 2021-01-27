@@ -1,0 +1,33 @@
+ZZL:
+leetcode中对负数取余是绝对值取余后加符号，这里要注意
+我的做法取巧了
+class Solution {
+public:
+    int reverse(int x) {
+	long result=0;
+	while (x != 0){
+		result = result * 10 + x %10;
+		x = x / 10;
+	};
+    if(result<-pow(2,31)||result>pow(2,31)-1)
+        return 0;
+    else
+	    return result;
+    }
+};
+
+
+class Solution {
+public:
+    int reverse(int x) {
+        int rev = 0;
+        while (x != 0) {
+            int pop = x % 10;
+            x /= 10;
+            if (rev > INT_MAX/10 || (rev == INT_MAX / 10 && pop > 7)) return 0;
+            if (rev < INT_MIN/10 || (rev == INT_MIN / 10 && pop < -8)) return 0;
+            rev = rev * 10 + pop;
+        }
+        return rev;
+    }
+};
