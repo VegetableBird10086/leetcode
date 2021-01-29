@@ -1,0 +1,87 @@
+ZZL:
+执行用时：0 ms, 在所有 C++ 提交中击败了100.00%的用户
+内存消耗：6.8 MB, 在所有 C++ 提交中击败了98.89%的用户
+// 题目不难 处理好边界情况就好
+class Solution {
+public:
+    int myAtoi(string s) {
+        int it=0,ans=0;
+        // 跳过空格
+        while(s[it]==' ')
+            it++;
+        if(isalpha(s[it]))
+            return 0;
+        int sign=1;
+        // 判断符号
+        if(s[it]=='-')
+            sign=-1,it++;
+        else if(s[it]=='+')
+            it++;
+        while(s[it]>='0'&&s[it]<='9'){
+            if(ans>INT_MAX/10||(ans==INT_MAX/10&&isalnum(s[it])&&s[it]>='7'))
+                return INT_MAX;
+            if(ans<INT_MIN/10||(ans==INT_MIN/10&&isalnum(s[it])&&s[it]>='8'))
+                return INT_MIN;
+            ans=ans*10+sign*(s[it++]-'0');
+        }
+        return ans;
+    }
+};
+
+题解中使用了自动机，感觉没有必要这么麻烦
+而且时间和空间开销极大 不过可以借鉴一下
+复杂的字符串问题处理时或许会有帮助
+class Automaton {
+    string state = "start";
+    unordered_map<string, vector<string>> table = {
+        {"start", {"start", "signed", "in_number", "end"}},
+        {"signed", {"end", "end", "in_number", "end"}},
+        {"in_number", {"end", "end", "in_number", "end"}},
+        {"end", {"end", "end", "end", "end"}}
+    };
+
+    int get_col(char c) {
+        if (isspace(c)) return 0;
+        if (c == '+' or c == '-') return 1;
+        if (isdigit(c)) return 2;
+        return 3;
+    }
+public:
+    int sign = 1;
+    long long ans = 0;
+
+    void get(char c) {
+        state = table[state][get_col(c)];
+        if (state == "in_number") {
+            ans = ans * 10 + c - '0';
+            ans = sign == 1 ? min(ans, (long long)INT_MAX) : min(ans, -(long long)INT_MIN);
+        }
+        else if (state == "signed")
+            sign = c == '+' ? 1 : -1;
+    }
+};
+
+class Solution {
+public:
+    int myAtoi(string str) {
+        Automaton automaton;
+        for (char c : str)
+            automaton.get(c);
+        return automaton.sign * automaton.ans;
+    }
+};
+
+在看题解的时候发现了一个正则表达式的解法，比较有意思
+python3的
+其思路就是先清除左边空格
+从剩余字符的第一个字符开始匹配数字
+最后判断是否溢出即可
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        INT_MAX = 2147483647    
+        INT_MIN = -2147483648
+        str = str.lstrip()      #清除左边多余的空格
+        num_re = re.compile(r'^[\+\-]?\d+')   #设置正则规则
+        num = num_re.findall(str)   #查找匹配的内容
+        num = int(*num) #由于返回的是个列表，解包并且转换成整数
+        return max(min(num,INT_MAX),INT_MIN)    #返回值
