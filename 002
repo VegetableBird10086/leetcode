@@ -59,3 +59,38 @@ public:
         return head;
     }
 };
+
+
+LXT：
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int tab=0;//表示进位
+        ListNode* current1=l1;
+        ListNode* current2=l2;
+        while(current1->next!=NULL||current2->next!=NULL) {//把两个链表补的一样长
+            if(current1->next==NULL) {
+                current1->next=new ListNode();
+            }
+            else if(current2->next==NULL) {
+                current2->next=new ListNode();
+            }
+            current1->val=current1->val+current2->val+tab;
+            if(current1->val>9) {
+                tab=1;
+                current1->val=current1->val-10;
+            } 
+            else tab=0;
+            current1=current1->next;
+            current2=current2->next;   
+        }
+        current1->val=current1->val+current2->val+tab;//最后一位的计算
+        if(current1->val>9) {
+            tab=1;
+            current1->val=current1->val-10;
+            current1->next=new ListNode(1);//进位1
+        } 
+        else tab=0;
+        return l1;
+    }
+};
