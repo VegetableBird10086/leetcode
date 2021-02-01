@@ -1,0 +1,62 @@
+ZZL:
+打表出省一 hiahiahia~
+执行用时：8 ms, 在所有 C++ 提交中击败了73.94%的用户
+内存消耗：5.9 MB, 在所有 C++ 提交中击败了90.70%的用户
+时间开销理应超过模拟算法，但是没有模拟快，不太明白
+class Solution {
+public:
+    string intToRoman(int num) {
+         int nums[]={1000,900,500,400,100,90,50,40,10,9,5,4,1};
+         string roman[]={"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+         string ans;
+         for(int i=0;i<13;i++){
+             while(num>=nums[i]){
+                 ans+=roman[i];
+                 num-=nums[i];
+             }
+         }
+         return ans;
+    }
+};
+
+执行用时：4 ms, 在所有 C++ 提交中击败了92.60%的用户
+内存消耗：5.8 MB, 在所有 C++ 提交中击败了94.16%的用户
+模拟：
+class Solution {
+public:
+    string intToRoman(int num) {
+        // 对以下7个数字取模
+        int mod[7]={1000,500,100,50,10,5,1};
+        // 对应的罗马字符
+        char roman[8]="MDCLXVI";
+        string ans="";
+        for(int i=0;i<7;i++){
+            // 考虑9 90 900的情况
+            if(mod[i]-num<=mod[i]/10&&!(i%2)&&mod[i]>num){
+                ans+=roman[i+2];
+                ans+=roman[i];
+                num-=9*mod[i++]/10;
+                continue;
+            }
+            int n=num/mod[i];
+            num=num%mod[i];
+            // 考虑4 40 400的情况
+            if(n==4){
+                ans+=roman[i];
+                ans+=roman[i-1];
+            }
+            else{
+                while(n--)
+                    ans+=roman[i];
+            }
+            // 类似1900这种情况
+            if(mod[i]-num<=mod[i]/10&&!(i%2)&&mod[i]>num){
+                ans+=roman[i+2];
+                ans+=roman[i];
+                num-=9*mod[i++]/10;
+                continue;
+            }
+        }
+        return ans;
+    }
+};
