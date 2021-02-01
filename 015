@@ -1,0 +1,44 @@
+ZZL:
+执行用时：100 ms, 在所有 C++ 提交中击败了82.17%的用户
+内存消耗：19.5 MB, 在所有 C++ 提交中击败了94.66%的用户
+思路：双指针
+具体步骤为：
+1.排序
+2.枚举取出的三元组的第一个数的值
+3.对该数右侧的数进行双指针遍历 目标值是该值的负数
+ATTENTION：不能有重复的三元组 这个是由数组有序的性质保证的
+这种做法，取出的三元组是有序的 枚举的是最小的元素 
+i>0&&nums[i]==nums[i-1]保证了最小元素的不重复性
+left>i+1&&nums[left]==nums[left-1]保证了次小元素的不重复性
+三元组之二不重复 那么最后一个元素也不会重复
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        // 保存答案
+        vector<vector<int>> ans;
+        sort(nums.begin(),nums.end());
+        for(int i=0,j=nums.size();i<j;i++){
+            // 保证第一个取出的元素不重复
+            if(i>0&&nums[i]==nums[i-1])
+                continue;
+            // 双指针遍历 遍历区间[i+1,size-1]
+            int left=i+1,right=j-1;
+            while(left<right){
+                // 保证第二个取出的元素不重复
+                if(left>i+1&&nums[left]==nums[left-1]){
+                    left++;
+                    continue;
+                }
+                // 小指针变大
+                while(right>left&&nums[left]+nums[right]>-nums[i])
+                    right--;
+                // 大指针变小
+                while(left<right&&nums[left]+nums[right]<-nums[i])
+                    left++;
+                if(left<right&&nums[left]+nums[right]==-nums[i])
+                    ans.push_back({nums[i],nums[left++],nums[right--]});
+            }
+        }
+        return ans;
+    }
+};
