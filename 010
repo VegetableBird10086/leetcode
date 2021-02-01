@@ -1,0 +1,41 @@
+ZZL：
+// 这道题的难度是可以的
+// 毕竟我暴力解了一个晚上也没解出来
+// 随后花了半分钟复制粘贴
+/*
+  * 思路：动态规划
+  * 状态：dp[i][j]表示s的前i个字符和p的前j个字符是否能够匹配
+  * 状态方程比较复杂
+  * 对s[i-1]和p[j-1]进行匹配时(前i个字符对应的索引是i-1，前j个字符对应的索引是j-1)
+  * 会发现当s[i-1]==p[j-1]或p[j-1]=='.'时 dp[i][j]与dp[i-1][j-1]的真值相同
+  * 当p[j-1]=='*'时 可以有以下两种匹配方式
+  * 1.'*'代表零次匹配时 可舍弃"X*"这个正则式 则真值与dp[i][j-2]相同
+  * 2.'*'代表多次匹配时 如果'*'前一个字母与s[i-1]匹配 也即p[j-2]==s[i-1]||p[j-2]=='.' 那么此时的dp[i][j]真值与dp[i][j-2]|dp[i-1][j]相同
+*/
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        s=" "+s;
+        p=" "+p;
+        int m=s.size(),n=p.size();
+        bool dp[m+1][n+1];
+        memset(dp,false,sizeof dp);
+        dp[0][0]=true;
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                if(s[i-1]==p[j-1] || p[j-1]=='.'){
+                    dp[i][j]=dp[i-1][j-1];
+                }
+                else if(p[j-1]=='*'){
+                    if(s[i-1]!=p[j-2] && p[j-2]!='.')
+                        dp[i][j]=dp[i][j-2];
+                    else{
+                        dp[i][j]=dp[i][j-2] | dp[i-1][j];
+
+                    }
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
