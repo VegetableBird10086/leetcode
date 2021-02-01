@@ -1,0 +1,26 @@
+ZZL:
+执行用时：8 ms, 在所有 C++ 提交中击败了97.91%的用户
+内存消耗：9.6 MB, 在所有 C++ 提交中击败了87.72%的用户
+思路：和15题基本一致 而且更加简单
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        int ans=nums[0]+nums[1]+nums[2];
+        sort(nums.begin(),nums.end());
+        for(int first=0,j=nums.size();first<j;first++){
+            int second=first+1,third=j-1;
+            while(second<third){
+                int sum=nums[first]+nums[second]+nums[third];
+                if(abs(sum-target)<abs(ans-target))
+                    ans=sum;
+                if(sum<target)
+                    second++;
+                else if(sum>target)
+                    third--;
+                else
+                    return target;
+            }
+        }
+        return ans;
+    }
+};
