@@ -1,0 +1,22 @@
+执行用时：20 ms, 在所有 C++ 提交中击败了97.15%的用户
+内存消耗：17.3 MB, 在所有 C++ 提交中击败了90.32%的用户
+思路：双指针（yysy，挺难想的）
+指针i指向左边界 右指针指向有边界
+指针移动规则是移动对应高度较小的那个指针
+证明：若形成的容器长为l高度为h，若移动较高的指针，则容积会变成（l-1）*h
+而移动较小的指针则有可能变大 这也是一种贪心思想
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int i=0,j=height.size()-1;
+        int max_area=0;
+        while(i<j){
+            max_area=max((j-i)*min(height[i],height[j]),max_area);
+            if(height[i]<height[j])
+                i++;
+            else 
+                j--;
+        }
+        return max_area;
+    }
+};
