@@ -1,0 +1,25 @@
+ZZL:
+执行用时：4 ms, 在所有 C++ 提交中击败了90.58%的用户
+内存消耗：8.9 MB, 在所有 C++ 提交中击败了91.23%的用户
+没啥说的 暴力求解
+题解的二分、分治算法用这不太合适
+class Solution {
+public:
+   string longestCommonPrefix(vector<string>& strs) {
+		if(0==strs.size()) return "";
+        string ans="";
+        int i=0;
+        for(int j=0;strs[i][j]!='\0';j++){
+            for(;i<strs.size();i++){
+                if(strs[i][j]!=strs[0][j])
+                break;
+            }
+            if(i==strs.size()){
+                ans+=strs[0][j];
+                i=0;
+            }
+            else break;
+        }
+        return ans;
+	}
+};
