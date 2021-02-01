@@ -46,3 +46,32 @@ public:
         return maxStr;
     }
 };
+
+
+LXT:
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        stack<int> result;//保存结果的最大值
+        result.push(0);
+        if(s.length()==0) return 0;//序列为空，直接返回结果
+        int tail,i,head=0,tab=1;//头尾两指针，指向当前所测试子序列
+        for(tail=1;tail<s.length();tail++) {//
+            for(i=1;i<=tail-head;i++) {
+                if(s[tail]==s[tail-i]) {//有重复时
+                    if(tail==s.length()-1) tab=0;//到结尾时无重复，标记
+                    if(result.top()<tail-head) {//比之前子序列长度大，则保存入栈
+                    result.push(tail-head); 
+                    }                    
+                    head++;tail--;
+                    break; 
+                }
+            }
+        }
+        if(tab==1&&result.top()<tail-head) {//最后结尾时的无重复序列
+            result.push(tail-head);
+        };
+        int p=result.top();
+        return p;
+    }
+};
