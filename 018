@@ -1,0 +1,38 @@
+ZZL:
+执行用时：72 ms, 在所有 C++ 提交中击败了70.61%的用户
+内存消耗：12.6 MB, 在所有 C++ 提交中击败了90.14%的用户
+思路：和三数之和一样 不赘述了
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> ans;
+        if(nums.size()<4)
+            return ans;
+        sort(nums.begin(),nums.end());
+        int size=nums.size();
+        for(int i=0;i<size;i++){
+            if(i>0&&nums[i]==nums[i-1])
+                continue;
+            for(int j=i+1;j<size;j++){
+                if(j>i+1&&nums[j]==nums[j-1])
+                    continue;
+                int sum2=nums[i]+nums[j];
+                int left=j+1,right=size-1;
+                while(left<right){
+                    if(left>j+1&&nums[left]==nums[left-1]){
+                        left++;
+                        continue;
+                    }
+                    int sum4=sum2+nums[left]+nums[right];
+                    if(sum4<target)
+                        left++;
+                    else if(sum4>target)
+                        right--;
+                    else
+                        ans.push_back({nums[i],nums[j],nums[left++],nums[right--]});
+                }
+            }
+        }
+        return ans;
+    }
+};
