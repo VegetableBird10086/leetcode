@@ -1,0 +1,36 @@
+ZZL:
+执行用时：4 ms, 在所有 C++ 提交中击败了37.53%的用户
+内存消耗：6.5 MB, 在所有 C++ 提交中击败了86.59%的用户
+深搜这么慢我也是万万没想到
+答案花里胡哨的 其实也是深搜
+但是比我快得多
+我很委屈
+class Solution {
+public:
+    string phone_number[8]={"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    string combination;
+    int num[4];
+    vector<string> ans;
+    void DFS(int level,int n){
+        if(level==n){
+            ans.push_back(combination);
+            return;
+        }
+        int it=0,i=num[level];
+        while(phone_number[i][it]!='\0'){
+            combination.push_back(phone_number[i][it]);
+            it++;
+            DFS(level+1,n);
+            combination.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        int n=digits.size();
+        if(!n)
+            return ans;
+        for(int i=0;i<digits.size();i++)
+            num[i]=digits[i]-'2';
+        DFS(0,n);
+        return ans;
+    }
+};
