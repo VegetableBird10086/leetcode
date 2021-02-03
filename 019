@@ -1,0 +1,65 @@
+ZZL:
+执行用时：4 ms, 在所有 C++ 提交中击败了90.43%的用户
+内存消耗：10.6 MB, 在所有 C++ 提交中击败了78.70%的用户
+思路：用栈存储记录即可
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        stack<ListNode*> node;
+        ListNode* it=head;
+        while(it!=nullptr){
+            node.push(it);
+            it=it->next;
+        }
+        ListNode* now_node;
+        while(n){
+            now_node=node.top();
+            node.pop();
+            n--;
+        }
+        if(node.empty())
+            return now_node->next;
+    
+        node.top()->next=now_node->next;
+        return head;
+    }
+};
+
+题解给的做法也是很不错的
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* temp=new ListNode(0,head);
+        ListNode* first=temp,*second=head;;
+        while(n){
+            second=second->next;
+            n--;
+        }
+        while(second!=nullptr){
+            first=first->next;
+            second=second->next;
+        }
+        first->next=first->next->next;
+        return temp->next;
+    }
+};
